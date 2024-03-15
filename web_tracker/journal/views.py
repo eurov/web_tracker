@@ -22,10 +22,11 @@ class DomainsViewSet(ListModelMixin, GenericViewSet):
 
     def list(self, request):
         visits = self.get_queryset()
-        if not visits:
-            return Response({"status": "no entries"})
         return Response(
-            {"domains": visits.values_list("domain", flat=True), "status": "ok"}
+            {
+                "domains": visits.values_list("domain", flat=True),
+                "status": ("ok", "no entries")[not visits],
+            }
         )
 
 
